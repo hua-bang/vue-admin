@@ -15,6 +15,11 @@
           <el-input type="password" v-model="ruleForm.password" autocomplete="off" minlength="6" maxlength="20"></el-input>
         </el-form-item>
 
+        <el-form-item prop="rePassword" class="item-form" v-if="model === 'register'">
+          <label>确认密码</label>
+          <el-input type="password" v-model="ruleForm.rePassword" autocomplete="off" minlength="6" maxlength="20"></el-input>
+        </el-form-item>
+
         <el-form-item prop="code" class="item-form">
           <label>验证码</label>
           <el-row :gutter="10">
@@ -37,6 +42,8 @@
 </template>
 
 <script>
+import {validateDemo} from "@/utils/validate"
+
 export default {
   name: "login",
   data() {
@@ -64,14 +71,25 @@ export default {
         callback();
       }
     };
+    let validateRePassword = (rule, value, callback) => {
+      if(value === '') {
+        callback(new Error('请输入重复密码'));
+      }else if(value !== this.ruleForm.password){
+        callback(new Error('请确认密码'))
+      }else{
+        callback()
+      }
+    }
     return {
       menuTab: [
-        {txt: "登录", current: true},
-        {txt: "注册", current: false}
+        {txt: "登录", current: true, type:'login'},
+        {txt: "注册", current: false, type:'register'}
       ],
+      model:'login',
       ruleForm: {
         username:'',
         password: '',
+        rePassword:'',
         code: ''
       },
       rules: {
@@ -81,6 +99,9 @@ export default {
         password: [
           { validator: validatePassword, trigger: 'blur' }
         ],
+        rePassword: [
+          { validator: validateRePassword, trigger: 'blur' }
+        ],
         code: [
           { validator: validateCode, trigger: 'blur' }
         ]
@@ -88,6 +109,7 @@ export default {
     };
   },
   created() {
+    validateDemo()
   },
   mounted() {
   },
@@ -97,6 +119,13 @@ export default {
         element.current = false
       })
       data.current = true
+      this.model = data.type
+      this.ruleForm = {
+        username:'',
+        password: '',
+        rePassword:'',
+        code: ''
+      }
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
