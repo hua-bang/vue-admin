@@ -27,7 +27,7 @@
               <el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input>
             </el-col>
             <el-col :span="9">
-              <el-button type="success" class="block">获取验证码</el-button>
+              <el-button type="success" class="block" @click="getCode()">获取验证码</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import axios from "axios"
-import {reactive,ref,onMounted} from "@vue/composition-api";
+import { getSms } from "@/api/login";
+import { reactive, ref, onMounted } from "@vue/composition-api";
 
 
 export default {
@@ -108,14 +108,12 @@ export default {
     ])
 
     const model = ref("login")
-    console.log(model.value)
 
 
     /**
      * 生命周期函数
      * */
     onMounted(()=>{
-      console.log("挂载完成")
     })
 
     const toggleMenu = (data => {
@@ -131,10 +129,19 @@ export default {
         if (valid) {
           alert('submit!');
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
+    })
+
+    const getCode = (() => {
+      let data = {
+        username:'1111111@qq.com',
+        module: 'login'
+      }
+      getSms(data).then(res => {
+        console.log(res)
+      })
     })
 
     return {
@@ -143,7 +150,8 @@ export default {
       toggleMenu,
       submitForm,
       ruleForm,
-      rules
+      rules,
+      getCode
     }
   }
 };
