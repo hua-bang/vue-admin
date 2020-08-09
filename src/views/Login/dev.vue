@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {validateDemo} from "@/utils/validate"
+import axios from "axios"
 import {reactive,ref,onMounted} from "@vue/composition-api";
 
 
