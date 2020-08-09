@@ -24,16 +24,16 @@
           <label>验证码</label>
           <el-row :gutter="10">
             <el-col :span="15">
-              <el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input>
+              <el-input v-model="ruleForm.code" minlength="6" maxlength="6"></el-input>
             </el-col>
             <el-col :span="9">
-              <el-button type="success" class="block" @click="getCode()">获取验证码</el-button>
+              <el-button type="success" class="block" @click="getCode()" :disabled="codeButtonStatus" >{{codeButtonStatus?'发送中':'获取验证码'}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="danger" @click="submitForm('ruleForm')" class="login-btn block">提交</el-button>
+          <el-button type="danger" @click="submitForm('ruleForm')" class="login-btn block" :disabled="loginButtonStatus">{{model==='login'?"登录":"注册"}}</el-button>
         </el-form-item>
 
       </el-form>
@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import { getSms } from "@/api/login";
+import { getSms,  register, login } from "@/api/login";
 import { reactive, ref, onMounted } from "@vue/composition-api";
 
 
 export default {
   name: "dev",
   setup(props, context) {
-
+    const root = context.root
     let validateCode = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('验证码不能为空'));
@@ -87,6 +87,8 @@ export default {
       code: ''
     })
 
+    const codeButtonStatus = ref(false)
+
     const rules = reactive({
       username: [
         { validator: validateUsername, trigger: 'blur' }
@@ -108,6 +110,7 @@ export default {
     ])
 
     const model = ref("login")
+    const loginButtonStatus = ref(true)
 
 
     /**
@@ -117,30 +120,67 @@ export default {
     })
 
     const toggleMenu = (data => {
-      console.log(menuTab)
       menuTab.forEach(element => {
         element.current = false
       })
       data.current = true
       model.value = data.type
+      loginButtonStatus.value = true
+      context.refs.ruleForm.resetFields()
     })
+
     const submitForm = (formName => {
       context.refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          const {username,password,code} = ruleForm;
+          const data = {username,password,code}
+          model.value === 'register'?userRegister(data):userLogin(data)
         } else {
+          root.$message.error("请正确输入表单信息")
           return false;
         }
       });
     })
 
+    const userRegister = ((data)=>{
+      register(data).then(res=>{
+        let data = res.data
+        root.$message.success(data.message)
+        toggleMenu(menuTab[0])
+      }).catch(err => {
+        console.log(err)
+      })
+    })
+
+    const userLogin = ((data)=>{
+      login(data).then(res =>{
+        let data = res.data
+        root.$message.success(data.message)
+      }).catch(err => {
+        console.log(err)
+      })
+    })
+
     const getCode = (() => {
-      let data = {
-        username:'1111111@qq.com',
-        module: 'login'
+      codeButtonStatus.value = true
+      if(ruleForm.username === ''){
+          root.$message.error("邮箱不能为空");
+          return false
       }
+      let data = {
+        username:ruleForm.username,
+        module: model.value
+      }
+
+      //请求接口
       getSms(data).then(res => {
-        console.log(res)
+        codeButtonStatus.value = false
+        let data = res.data
+        root.$message.success(data.message)
+        loginButtonStatus.value = false
+      }).catch((err)=>{
+        codeButtonStatus.value = false
+        console.log(err)
       })
     })
 
@@ -151,7 +191,9 @@ export default {
       submitForm,
       ruleForm,
       rules,
-      getCode
+      getCode,
+      loginButtonStatus,
+      codeButtonStatus
     }
   }
 };
