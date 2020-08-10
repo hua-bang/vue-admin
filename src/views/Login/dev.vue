@@ -158,6 +158,9 @@ export default {
       login(data).then(res =>{
         let data = res.data
         root.$message.success(data.message)
+        root.$router.push({
+          name: "Console"
+        })
       }).catch(err => {
         console.log(err)
       })

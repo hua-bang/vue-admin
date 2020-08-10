@@ -8,8 +8,22 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "login"
+    redirect: "dev"
   },
+  {
+    path: "/console",
+    name: "Console",
+    component: () =>
+        import("../views/Layout/index.vue"),
+    children: [
+      {
+        path: "/console",
+        name: "Console",
+        component: () => import("../views/Console/index.vue")
+      }
+    ]
+  }
+  ,
   {
     path: "/login",
     name: "Login",
