@@ -5,7 +5,7 @@
         <el-submenu v-if="!item.hidden" :key="item.id" :index="index+''">
           <!--        一级菜单-->
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <svg-icon :iconClass="item.meta.icon" className="menu"/>
             <span slot="title">{{item.meta.name}}</span>
           </template>
           <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">{{subItem.meta.name}}</el-menu-item>
@@ -44,6 +44,10 @@ export default {
   width: $navMenu;
   height: 100vh;
   background: #344a5f;
+  svg{
+    font-size: 20px;
+    margin-right: 10px;
+  }
 }
 
 </style>

@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from "./router";
 import store from "./store";
 import VueCompositionApi from "@vue/composition-api"
+import "./icons"
 
 Vue.use(ElementUI)
 Vue.use(VueCompositionApi);
