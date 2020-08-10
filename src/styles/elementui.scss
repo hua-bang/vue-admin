@@ -1,0 +1,13 @@
+.el-menu-item{
+  font-size: $menuFontSize;
+  padding-left: 50px !important;
+  &.is-active{
+    background-color: $selectChildrenMenuColor !important;
+  }
+}
+//修改一级菜单样式
+.el-submenu{
+  &.is-active.is-opened .el-submenu__title{
+    background-color: $selectMenuColor !important;
+  }
+}

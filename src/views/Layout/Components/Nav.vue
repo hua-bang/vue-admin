@@ -1,12 +1,37 @@
 <template>
   <div id="nav-wrap">
-
+    <el-menu default-active="1-1" class="el-menu-vertical-demo" :collapse="isCollapse" background-color="transparent" text-color="#fff" style="border-right:none" active-text-color="#fff" router>
+      <template v-for="(item,index) in routers">
+        <el-submenu v-if="!item.hidden" :key="item.id" :index="index+''">
+          <!--        一级菜单-->
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">{{item.meta.name}}</span>
+          </template>
+          <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">{{subItem.meta.name}}</el-menu-item>
+        </el-submenu>
+      </template>
+    </el-menu>
   </div>
 </template>
 
 <script>
+import { reactive, ref, onMounted } from "@vue/composition-api";
 export default {
-  name: "Nav"
+  name: "Nav",
+  setup(prop,{root}) {
+    /**
+     * 数据
+     */
+    const isCollapse = ref(false)
+
+    const routers = reactive(root.$router.options.routes)
+
+    return {
+      isCollapse,
+      routers
+    }
+  }
 }
 </script>
 
@@ -20,4 +45,5 @@ export default {
   height: 100vh;
   background: #344a5f;
 }
+
 </style>
