@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import sha1 from "js-sha1";
 import { getSms,  register, login } from "@/api/login";
 import { reactive, ref, onMounted } from "@vue/composition-api";
 
@@ -134,6 +135,7 @@ export default {
         if (valid) {
           const {username,password,code} = ruleForm;
           const data = {username,password,code}
+          data.password = sha1(data.password)
           model.value === 'register'?userRegister(data):userLogin(data)
         } else {
           root.$message.error("请正确输入表单信息")
