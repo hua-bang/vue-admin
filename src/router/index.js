@@ -97,12 +97,21 @@ const routes = [
       name: "关于",
       icon: "about"
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // 箭头函数是懒加载
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    children: [
+      {
+        path: "/aboutIndex",
+        name: "AboutIndex",
+        meta: {
+          name: "关于"
+        },
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        // 箭头函数是懒加载
+        component: () =>
+            import(/* webpackChunkName: "about" */ "../views/About.vue")
+      }
+    ]
   }
 ];
 
