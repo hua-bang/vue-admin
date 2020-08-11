@@ -31,7 +31,7 @@ export default {
     /**
      * computed监听方法
      */
-    const isCollapse = computed(() => root.$store.state.isCollapse)
+    const isCollapse = computed(() => root.$store.state.app.isCollapse)
 
     return {
       isCollapse,
