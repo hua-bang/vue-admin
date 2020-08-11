@@ -94,7 +94,8 @@ const routes = [
     path: "/about",
     name: "About",
     meta: {
-      name: "关于"
+      name: "关于",
+      icon: "about"
     },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

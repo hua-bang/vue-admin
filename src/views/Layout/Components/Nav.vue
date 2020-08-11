@@ -1,5 +1,8 @@
 <template>
   <div id="nav-wrap">
+    <h1 class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </h1>
     <el-menu default-active="1-1" class="el-menu-vertical-demo" :collapse="isCollapse" background-color="transparent" text-color="#fff" style="border-right:none" active-text-color="#fff" router>
       <template v-for="(item,index) in routers">
         <el-submenu v-if="!item.hidden" :key="item.id" :index="index+''">
@@ -47,6 +50,13 @@ export default {
   svg{
     font-size: 20px;
     margin-right: 10px;
+  }
+}
+.logo{
+  text-align: center;
+  img{
+    margin: 20px auto 20px;
+    width: 92px;
   }
 }
 

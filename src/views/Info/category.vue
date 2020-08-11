@@ -1,5 +1,5 @@
 <template>
-
+  <div>新闻首页</div>
 </template>
 
 <script>
