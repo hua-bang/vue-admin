@@ -155,7 +155,7 @@ export default {
     })
 
     const userLogin = ((data)=>{
-      root.$store.dispatch('actionLogin',data).then(res =>{
+      root.$store.dispatch('app/actionLogin',data).then(res =>{
         let data = res.data
         root.$message.success(data.message)
         root.$router.push({

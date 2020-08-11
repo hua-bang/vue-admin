@@ -5,7 +5,7 @@
     </div>
     <div class="pull-right">
       <div class="user-info pull-left">
-        管理员
+        {{username}}
       </div>
       <div class="pull-left  header-icon"><svg-icon icon-class="exit" class-name="menu"/></div>
     </div>
@@ -13,14 +13,18 @@
 </template>
 
 <script>
+import {computed} from "@vue/composition-api";
+
 export default {
   name: "Header",
   setup(props, {root}) {
+    const username = computed(() => root.$store.state.app.username)
     const navMenuState = () => {
       root.$store.commit('app/SET_COLLAPSE')
     }
 
     return{
+      username,
       navMenuState
     }
   }
