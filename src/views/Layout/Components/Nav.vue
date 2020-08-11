@@ -19,16 +19,19 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted } from "@vue/composition-api";
+import { reactive, ref, onMounted, computed } from "@vue/composition-api";
 export default {
   name: "Nav",
   setup(prop,{root}) {
     /**
      * 数据
      */
-    const isCollapse = ref(false)
-
     const routers = reactive(root.$router.options.routes)
+
+    /**
+     * computed监听方法
+     */
+    const isCollapse = computed(() => root.$store.state.isCollapse)
 
     return {
       isCollapse,
@@ -44,9 +47,9 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  width: $navMenu;
   height: 100vh;
   background: #344a5f;
+  @include webkit(transition,all .3s ease 0s);
   svg{
     font-size: 20px;
     margin-right: 10px;
@@ -59,5 +62,10 @@ export default {
     width: 92px;
   }
 }
-
+.open{
+  #nav-wrap {width: $navMenu}
+}
+.close{
+  #nav-wrap {width: $navMenuMin}
+}
 </style>
