@@ -82,8 +82,8 @@ const routes = [
     ]
   },
   {
-    path: "/dev",
-    name: "Dev",
+    path: "/login",
+    name: "Login",
     meta: {
       name: "登录"
     },

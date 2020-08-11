@@ -6,6 +6,7 @@ import router from "./router";
 import store from "./store";
 import VueCompositionApi from "@vue/composition-api"
 import "./icons"
+import "./router/premit"
 
 Vue.use(ElementUI)
 Vue.use(VueCompositionApi);
