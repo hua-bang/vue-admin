@@ -50,6 +50,7 @@ import { reactive, ref, onMounted } from "@vue/composition-api";
 export default {
   name: "dev",
   setup(props, context) {
+    console.log("自动部署")
     const root = context.root
     let validateCode = (rule, value, callback) => {
       if (!value) {
@@ -158,9 +159,9 @@ export default {
       root.$store.dispatch('app/actionLogin',data).then(res =>{
         let data = res.data
         root.$message.success(data.message)
-        root.$router.push({
-          name: "Console"
-        })
+          root.$router.push({
+            name: "Console"
+          })
       }).catch(err => {
         console.log(err)
       })
