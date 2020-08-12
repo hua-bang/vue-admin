@@ -51,6 +51,7 @@ export default {
   name: "dev",
   setup(props, context) {
     console.log("自动部署")
+    console.log("自动部署*2")
     const root = context.root
     let validateCode = (rule, value, callback) => {
       if (!value) {
