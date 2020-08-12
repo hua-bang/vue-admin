@@ -1,5 +1,5 @@
 import { login } from "@/api/login";
-import {setToken, getToken, setUsername, getUsername} from "@/utils/app";
+import {setToken, getToken, setUsername, getUsername, removeToken, removeUsername} from "@/utils/app";
 
 const state = {
     isCollapse: JSON.parse(sessionStorage.getItem('isCollapse')) || false,
@@ -24,6 +24,12 @@ const mutations = {  //更改state里面的值需要用到
     },
     SET_USERNAME(state,value){
         state.username = value
+    },
+    REMOVE_TOKEN(state){
+        state.token = ''
+    },
+    REMOVE_USERNAME(state){
+        state.username = ''
     }
 }
 
@@ -41,6 +47,15 @@ const actions = {  //可以回调
             }).catch(err=>{
                 reject(err)
             })
+        })
+    },
+    exit({ commit }) {
+        return new Promise((resolve, reject) => {
+            removeToken();
+            removeUsername();
+            commit('REMOVE_TOKEN')
+            commit('REMOVE_USERNAME')
+            resolve();
         })
     }
 }

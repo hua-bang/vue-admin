@@ -7,7 +7,7 @@
       <div class="user-info pull-left">
         {{username}}
       </div>
-      <div class="pull-left  header-icon"><svg-icon icon-class="exit" class-name="menu"/></div>
+      <div class="pull-left  header-icon" @click="exit"><svg-icon icon-class="exit" class-name="menu"/></div>
     </div>
   </div>
 </template>
@@ -23,9 +23,20 @@ export default {
       root.$store.commit('app/SET_COLLAPSE')
     }
 
+    const exit = (()=>{
+      root.$store.dispatch("app/exit").then(()=>{
+        root.$message.success("退出登录，正在为你跳转页面")
+        setTimeout(()=>{
+          root.$router.push({
+            name: "Login"
+          })
+        },1500)
+      })
+    })
     return{
       username,
-      navMenuState
+      navMenuState,
+      exit
     }
   }
 }

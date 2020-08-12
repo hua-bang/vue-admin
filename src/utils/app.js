@@ -11,7 +11,7 @@ export function setToken(token) {
     cookie.set(adminToken,token);
 }
 
-export function removeToken(token) {
+export function removeToken() {
     cookie.remove(adminToken)
 }
 
