@@ -32,3 +32,16 @@
     background-color: $mainColor !important;
   }
 }
+
+div.el-table{
+  td,th{
+    text-align: center;
+  }
+  th{
+    font-weight: bold;
+    color: #344a5f;
+  }
+  td{
+    font-size: 14px;
+  }
+}
