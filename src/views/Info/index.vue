@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="4">
           <el-form-item label="类型:">
-            <el-select v-model="value" placeholder="请选择" style="width: 120px;">
+            <el-select v-model="categoryValue" placeholder="请选择" style="width: 120px;">
               <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -14,10 +14,10 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="8">
           <el-form-item label="日期:">
-            <el-date-picker
-                v-model="value2"
+            <el-date-picker style="width: 300px"
+                v-model="dateValue"
                 type="datetimerange"
                 align="center"
                 unlink-panels
@@ -28,23 +28,23 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-form-item label="关键字:">
-            <el-select v-model="search_key" style="width: 80px" placeholder="标题">
+            <el-select v-model="searchKey" style="width: 80px" placeholder="标题">
               <el-option v-for="item in searchOption" :key="item.value" :value="item.value" :label="item.label">
               </el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-input v-model="search_keyWord"  placeholder="请输入内容">
+          <el-input v-model="searchKeyWord"  placeholder="请输入内容">
           </el-input>
         </el-col>
         <el-col :span="2">
           <el-button type="danger">搜索</el-button>
         </el-col>
         <el-col :span="2">
-          <el-button type="danger" class="pull-right">新增</el-button>
+          <el-button type="danger" class="pull-right" @click="dialogInfo=true">新增</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -54,7 +54,7 @@
         border
         style="width: 100%">
       <el-table-column type="selection" width="45"></el-table-column>
-      <el-table-column prop="title" label="标题" width="680"></el-table-column>
+      <el-table-column prop="title" label="标题" width="500"></el-table-column>
       <el-table-column prop="category" label="类型" width="130"></el-table-column>
       <el-table-column prop="date" label="日期" width="200"></el-table-column>
       <el-table-column prop="user" label="管理员" width="100"></el-table-column>
@@ -81,15 +81,23 @@
         </el-pagination>
       </el-col>
     </el-row>
+    <DialogInfo :flag="dialogInfo" @close="closeDialog"/>
   </div>
 </template>
 
 <script>
+import DialogInfo from "./dialog/info";
 import { reactive, ref, onMounted } from "@vue/composition-api";
 
 export default {
   name: "index",
+  components: { DialogInfo },
   setup(props){
+    const dialogInfo = ref(true);
+    const categoryValue = ref('');
+    const dateValue = ref('');
+    const searchKey = ref('');
+    const searchKeyWord = ref('');
     const options = reactive([
       {value:1,label:"国际信息"},
       {value:2,label:"国内信息"},
@@ -100,18 +108,7 @@ export default {
       {value:"id",label:"ID"},
       {value:"title",label:"标题"}
     ])
-    const value = ref('');
-    const value2 = ref('');
-    const search_key = ref('');
-    const formInline = reactive({})
-    const search_keyWord = ref('');
-    const handleSizeChange = (val) => {
-      console.log(val)
-    }
 
-    const handleCurrentChange = (val) => {
-      console.log(val)
-    }
     const tableData = reactive( [{
       title:"AchoBeta荣获一等奖",
       category:"国内信息",
@@ -133,17 +130,30 @@ export default {
       date: '2019-09-10 19:31:20',
       user:"管理员"
     }]);
+
+    const handleSizeChange = (val) => {
+      console.log(val)
+    }
+
+    const handleCurrentChange = (val) => {
+      console.log(val)
+    }
+
+    const closeDialog = () => {
+      dialogInfo.value = false
+    }
     return {
       options,
-      value,
-      formInline,
-      value2,
+      categoryValue,
+      dateValue,
       searchOption,
-      search_key,
-      search_keyWord,
+      searchKey,
+      searchKeyWord,
       tableData,
       handleCurrentChange,
-      handleSizeChange
+      handleSizeChange,
+      dialogInfo,
+      closeDialog
     }
   }
 }
