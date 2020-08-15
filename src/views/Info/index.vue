@@ -52,7 +52,7 @@
     <el-table
         :data="tableData"
         border
-        style="width: 100%">
+        style="width: 100%;margin-top: 30px">
       <el-table-column type="selection" width="45"></el-table-column>
       <el-table-column prop="title" label="标题" width="500"></el-table-column>
       <el-table-column prop="category" label="类型" width="130"></el-table-column>
@@ -60,15 +60,15 @@
       <el-table-column prop="user" label="管理员" width="100"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="danger" size="small">删除</el-button>
-          <el-button type="success" size="small">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteItem">删除</el-button>
+          <el-button type="success" size="small" @clcik="dialogInfo=true">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-row class="black-space-30">
       <el-col :span="12">
-        <el-button>批量删除</el-button>
+        <el-button @click="deleteAll">批量删除</el-button>
       </el-col>
       <el-col :span="12">
         <el-pagination
@@ -87,13 +87,16 @@
 
 <script>
 import DialogInfo from "./dialog/info";
-import { reactive, ref, onMounted } from "@vue/composition-api";
+import {global} from "@/utils/global_v_3.0";
+import { reactive, ref, onMounted, watchEffect } from "@vue/composition-api";
 
 export default {
   name: "index",
   components: { DialogInfo },
-  setup(props){
-    const dialogInfo = ref(true);
+  setup(props,{root}){
+    const {confirm} = global()
+
+    const dialogInfo = ref(false);
     const categoryValue = ref('');
     const dateValue = ref('');
     const searchKey = ref('');
@@ -142,6 +145,28 @@ export default {
     const closeDialog = () => {
       dialogInfo.value = false
     }
+
+    const deleteItem = () => {
+      confirm({
+        content:"确认删除，确认后无法撤销",
+        tip:'警告',
+        fn:confirmDelete,
+        id:222
+      })
+    }
+
+    const deleteAll = () => {
+      confirm({
+        content:"确认删除选中数据，确认后无法撤销",
+        type: 'success',
+        fn:confirmDelete,
+        id:123
+      })
+    }
+
+    const confirmDelete = (value) => {
+      console.log(value)
+    }
     return {
       options,
       categoryValue,
@@ -153,7 +178,10 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       dialogInfo,
-      closeDialog
+      closeDialog,
+      deleteItem,
+      deleteAll,
+      confirmDelete
     }
   }
 }

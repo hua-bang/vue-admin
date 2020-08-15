@@ -7,8 +7,10 @@ import store from "./store";
 import VueCompositionApi from "@vue/composition-api"
 import "./icons"
 import "./router/premit"
+import global from "@/utils/global";
 
-Vue.use(ElementUI)
+Vue.use(global);
+Vue.use(ElementUI);
 Vue.use(VueCompositionApi);
 Vue.config.productionTip = false;
 
