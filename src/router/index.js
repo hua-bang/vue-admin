@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "dev",
+    redirect: "Console",
     hidden: true,
     meta:{
       name:"主页"
